@@ -1,89 +1,220 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Sign In | Secure Portal</title>
 
 <style>
-body{
+*{
     margin:0;
-    font-family:Segoe UI;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    background:linear-gradient(-45deg,#0f172a,#1e40af,#06b6d4,#8b5cf6);
+    background:linear-gradient(
+        -45deg,
+        #0f172a,
+        #1e40af,
+        #06b6d4,
+        #8b5cf6
+    );
     background-size:400% 400%;
-    animation:bg 10s infinite;
+    animation:moveBg 12s ease infinite;
 }
 
-@keyframes bg{
+@keyframes moveBg{
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
 }
 
-.box{
-    width:350px;
-    padding:30px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(15px);
-    color:white;
+.login-box{
+    width:380px;
+    padding:35px 30px;
+    border-radius:32px;
+    background:rgba(255,255,255,0.16);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:0 8px 30px rgba(0,0,0,0.28);
+    transition:0.4s;
 }
 
-input{
-    width:100%;
-    padding:12px;
-    margin:8px 0;
-    border:none;
-    border-radius:10px;
+.brand-icon{
+    width:75px;
+    height:75px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, rgba(255,255,255,0.95), rgba(249,115,22,0.95));
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    font-size:36px;
 }
 
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:linear-gradient(45deg,#06b6d4,#3b82f6);
-    color:white;
+.login-box:hover{
+    transform:translateY(-5px);
+    background:rgba(255,255,255,0.22);
+}
+
+.input-group{
+    position:relative;
+}
+
+.password-toggle{
+    position:absolute;
+    top:50%;
+    right:16px;
+    transform:translateY(-50%);
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.18);
+    color:#f8fafc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
+    transition:0.2s;
 }
 
-a{
+.password-toggle:hover{
+    background:rgba(255,255,255,0.28);
+}
+
+h2{
+    color:white;
+    text-align:center;
+    margin-bottom:25px;
+    font-size:32px;
+}
+
+.input-box{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    font-size:15px;
+}
+
+.input-box::placeholder{
+    color:#e5e7eb;
+}
+
+.sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+}
+
+.btn{
+    width:100%;
+    padding:14px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    background:linear-gradient(
+        45deg,
+        #06b6d4,
+        #3b82f6,
+        #8b5cf6
+    );
+    transition:0.4s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px rgba(59,130,246,0.8);
+}
+
+.links{
+    text-align:center;
+    margin-top:20px;
+}
+
+.links a{
     color:#bfdbfe;
     text-decoration:none;
+}
+
+.links a:hover{
+    color:white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-    <h2>Login</h2>
+<div class="login-box">
+    <div class="brand-icon">🙂</div>
+    <h2>Sign In</h2>
 
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
+    <label for="username" class="sr-only">Username</label>
+    <input id="username" type="text" class="input-box" placeholder="Username" autocomplete="username">
 
-    <button onclick="login()">Login</button>
 
-    <p>New user? <a href="create.html">Create account</a></p>
+    <label for="password" class="sr-only">Password</label>
+    <div class="input-group">
+        <input id="password" type="password" class="input-box" placeholder="Password" autocomplete="current-password">
+        <button type="button" class="password-toggle" aria-label="Show password">👁️</button>
+    </div>
+
+    <button id="signInButton" type="button" class="btn">Sign In</button>
+
+    <div class="links">
+        <p>New to our service? <a href="creat.html">Create an account</a></p>
+    </div>
 </div>
 
 <script>
-function login(){
-    const u = document.getElementById("user").value;
-    const p = document.getElementById("pass").value;
+const brandIcon = document.querySelector('.brand-icon');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const toggleButton = document.querySelector('.password-toggle');
 
-    const data = JSON.parse(localStorage.getItem("user"));
-
-    if(data && u === data.username && p === data.password){
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Wrong login!");
+const updateIcon = () => {
+    if (passwordInput.value.length > 0) {
+        brandIcon.textContent = '🙈';
+        return;
     }
-}
+    brandIcon.textContent = usernameInput.value.trim() ? '😊' : '🙂';
+};
+
+usernameInput.addEventListener('input', updateIcon);
+passwordInput.addEventListener('input', updateIcon);
+passwordInput.addEventListener('focus', () => brandIcon.textContent = '🙈');
+passwordInput.addEventListener('blur', updateIcon);
+
+toggleButton.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    toggleButton.textContent = isPassword ? '🙈' : '👁️';
+    toggleButton.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+});
+
+const signInButton = document.getElementById('signInButton');
+signInButton.addEventListener('click', () => {
+    window.location.href = 'dashboard.html';
+});
 </script>
 
 </body>
