@@ -3,165 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auth System</title>
+<title>Login</title>
 
 <style>
 body{
     margin:0;
-    font-family:Segoe UI, Arial;
+    font-family:Segoe UI;
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
+    height:100vh;
     background:linear-gradient(-45deg,#0f172a,#1e40af,#06b6d4,#8b5cf6);
     background-size:400% 400%;
-    animation:moveBg 12s ease infinite;
+    animation:bg 10s infinite;
 }
 
-@keyframes moveBg{
+@keyframes bg{
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
 }
 
 .box{
-    width:380px;
+    width:350px;
     padding:30px;
-    border-radius:28px;
-    background:rgba(255,255,255,0.14);
-    backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,0.2);
+    border-radius:20px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
     color:white;
 }
 
-h2{
-    text-align:center;
-}
-
-.input{
+input{
     width:100%;
     padding:12px;
     margin:8px 0;
     border:none;
     border-radius:10px;
-    background:rgba(255,255,255,0.15);
-    color:white;
 }
 
 button{
     width:100%;
     padding:12px;
-    margin-top:10px;
     border:none;
     border-radius:10px;
-    cursor:pointer;
+    background:linear-gradient(45deg,#06b6d4,#3b82f6);
     color:white;
-    background:linear-gradient(45deg,#06b6d4,#3b82f6,#8b5cf6);
-}
-
-.switch{
-    text-align:center;
-    margin-top:15px;
-    color:#bfdbfe;
     cursor:pointer;
 }
 
-.msg{
-    text-align:center;
-    margin-top:10px;
-    color:#fca5a5;
+a{
+    color:#bfdbfe;
+    text-decoration:none;
 }
-
-.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
 <div class="box">
+    <h2>Login</h2>
 
-    <!-- LOGIN -->
-    <div id="loginBox">
-        <h2>Sign In</h2>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
 
-        <input id="loginUser" class="input" placeholder="Username">
-        <input id="loginPass" class="input" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
 
-        <button onclick="login()">Sign In</button>
-
-        <div id="loginMsg" class="msg"></div>
-
-        <div class="switch" onclick="showCreate()">
-            Create account
-        </div>
-    </div>
-
-    <!-- CREATE -->
-    <div id="createBox" class="hidden">
-        <h2>Create Account</h2>
-
-        <input id="regUser" class="input" placeholder="Username">
-        <input id="regPass" class="input" type="password" placeholder="Password">
-
-        <button onclick="createAccount()">Create</button>
-
-        <div id="createMsg" class="msg"></div>
-
-        <div class="switch" onclick="showLogin()">
-            Back to login
-        </div>
-    </div>
-
+    <p>New user? <a href="create.html">Create account</a></p>
 </div>
 
 <script>
-const loginBox = document.getElementById("loginBox");
-const createBox = document.getElementById("createBox");
-
-function showCreate(){
-    loginBox.classList.add("hidden");
-    createBox.classList.remove("hidden");
-}
-
-function showLogin(){
-    createBox.classList.add("hidden");
-    loginBox.classList.remove("hidden");
-}
-
-/* CREATE USER */
-function createAccount(){
-    const u = document.getElementById("regUser").value;
-    const p = document.getElementById("regPass").value;
-
-    if(!u || !p){
-        document.getElementById("createMsg").innerText = "Fill all fields";
-        return;
-    }
-
-    localStorage.setItem("user", JSON.stringify({username:u, password:p}));
-
-    document.getElementById("createMsg").style.color = "#86efac";
-    document.getElementById("createMsg").innerText = "Account created!";
-
-    setTimeout(showLogin, 1000);
-}
-
-/* LOGIN */
 function login(){
-    const u = document.getElementById("loginUser").value;
-    const p = document.getElementById("loginPass").value;
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
 
     const data = JSON.parse(localStorage.getItem("user"));
 
-    if(!data){
-        document.getElementById("loginMsg").innerText = "No account found!";
-        return;
-    }
-
-    if(u === data.username && p === data.password){
+    if(data && u === data.username && p === data.password){
         window.location.href = "dashboard.html";
     } else {
-        document.getElementById("loginMsg").innerText = "Wrong username or password!";
+        alert("Wrong login!");
     }
 }
 </script>
